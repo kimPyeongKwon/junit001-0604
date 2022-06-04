@@ -1,0 +1,83 @@
+https://www.egovframe.go.kr/home/main.do - 전자정부 표준프레임워크 사이트
+
+$ 개발 가이드
+
+# 시작하기
+
+전자정부 표준프레임워크 3.10 기반 개발 시작하기(Getting Started)
+- ver : jdk1.8
+
+step 1. 개발환경 설치
+
+~ 개발환경 설치 - 구현도구(implementation tool) 설치
+@ eclipse.ini 파일에 JVM경로 지정 
+-vm
+C:\Program Files\Java\jdk1.8.0_192\bin\javaw.exe
+@ eclipse 설치 
+@ perspective 전환
+@ 프로젝트 생성 및 서버 설치
+@ DB 정보 변경
+**@ Data Source Explorer 연결	- 작업환경 내의 모든 프로젝트에서 공유하여 사용 가능
+						- Database Connections 우클릭>New>MySQL>Next>Drivers 선택>옆에 추가 클릭>						  		  Name/Type에서 제일 최신 버전 클릭>JAR List에서 있는 파일 Remove JAR/Zip 후 Add 					  		  JAR/Zip...클릭>mysql-connector-java-버전.jar 열고 OK
+
+-- JDBC DRIVER(Data Source Explorer) ECLIPSE MySQL 연동 참고 - (https://m.blog.naver.com/juno_ribbon/221824677581)
+C:\Program Files\Java\jdk1.8.0_192\lib에 mysql-connector-java-버전-bin.jar 복사
+C:\Program Files\Apache Software Foundation\Tomcat 10.0\lib에 mysql-connector-java-버전-bin.jar 복사
+C:\Program Files\eGovFrameDev-3.10.0-64bit\eclipse\lib에 mysql-connector-java-버전-bin.jar 복사
+	(kimpg:lib 작성)
+
+-- project/src/main/resources/egovframework/spring/context-datasource.xml파일 <bean> 안에 설정한 내용과 db가 일치해야 Test Connection 가능
+
+-- JDBC 드라이버	: mysql 쿼리를 워크벤치나 cmd가 아닌, 이클립스에서 관리하도록 할 수 있는 것
+			  워크벤치나 cmd를 통해서 db를 관리할거라면 굳이 안해도 되는 작업
+
+**~ 플러그인 업데이트(Customize Development Tool)	- 구현도구(implementation tool) 플러그인 업데이트
+									- eGovFrame>Configuration>Customize Development Tool>									  		  선택>Next>설치 완료
+
+-- 선택 가능한 항목이 Spring IDE Web Flow Extension (optional)말고 없음
+
+-- 초기에 표준프레임워크 개발환경을 사용할 때 개발자에게 원하는 기능만을 선택하여 개발환경을 구성하는 기능을 제공습니다. 현재는 기본적으로 필요한 기능들을 모두 포함한 개발환경을 제공하고 있어서 해당 메뉴에 표현되지 않고 있습니다. 센터에서도 해당기능에 대해 기능개선을 고려하고 있으므로 참고만 하시기 바랍니다.
+
+~ Maven 환경설정 	- maven repostiory 3.10 파일 압축해제 설치
+			- settings 3.10.xml
+
+step 2. 프로젝트 생성 및 실행
+
+~ 프로젝트 import 	- HelloWorld 프로젝트 파일 저장
+				- File>Import..>Import wizard>General>Existing Projects into Workspace>next>
+				  select archive file:egovGettingStarted.zip>Finish
+
+& 사용하지 않는 import 삭제하는 방법 	- Source>Organize Imports을 실행하면 해당 소스 코드에서 사용되지 								   	  않는 import 문장이 모두 삭제됨
+
+& C:\Program Files\eclipse-workspace
+
+~ Maven을 이용한 빌드	- 프로젝트 빌드순서
+				   egovframework.guide 우클릭>Run As>Maven Build>Run>결과값 확인
+
+~ HelloWorld 실행	- HelloWorld 실행순서
+				  egovframework.guide-src/main/java-HelloWorldClient.java우클릭>Run As>Java Application>결과 확인
+
+**~ HelloWorld 테스트 실행	- HelloWorld 테스트 실행순서
+					  egovframwork.guide-src/test/java/HelloWorldServiceTest.java우클릭>Run   					 		  As>Junit test>결과창 확인
+-- Junit test창이 없음
+-- Data Source Explorer 연결 성공하니까 Junit test창이 생성됨
+
+step 3. 자세히 들여다 보기
+
+~ 서비스 인터페이스 클래스	- src/main/java/egovframework.guide.helloworld/HelloWorldService.java
+					- HelloWorld 서비스의 인터페이스 클래스(HelloWorldService)
+					   String sayHello() 메서드 선언
+
+~ 서비스 구현 클래스		- src/main/java/egovframework.guide.helloworld/HelloWorldServicelmpl.java
+					- HelloWorld 서비스의 구현 클래스(HelloWorldServicelmpl)
+					   HelloWorldService를 구현
+
+~ 서비스 속성 정의 파일		- src/main/resources/context-helloworld.xml
+					- HelloWorld 서비스의 속성정의 파일
+					- helloworld name 속성으로 서비스 구현클래스를 정의하고 있으며 해당 서비스의 name 					  	  속성을 egovframework로 선언
+
+~ 클라이언트 클래스		- src/main/java/egovframework.guide.helloworld/HelloWorldClient.java
+					- HelloWorld 서비스를 실행하기 위한 클라이언트 클래스
+
+~ 테스트 클래스			- src/test/java/egovframework.guide.helloworld/HelloWorldServiceTest.java
+					- HelloWorld 서비스 클래스를 테스트하기 위한 단위 테스트 클래스
