@@ -1,5 +1,6 @@
 https://www.egovframe.go.kr/home/main.do - 전자정부 표준프레임워크 사이트
 2022-06-04 kimPG update
+remote 06-04 update
 
 $ 개발 가이드
 
